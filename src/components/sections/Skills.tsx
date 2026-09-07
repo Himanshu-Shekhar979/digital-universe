@@ -83,25 +83,24 @@ export default function Skills() {
 
         {/* Skill Groups */}
         <div className="mt-24 grid gap-px border border-zinc-800 bg-zinc-800 sm:grid-cols-2">
-          {skillGroups.map((group, index) => (
-            <Reveal key={group.title} delay={0.1 + index * 0.08}>
-              <div data-skill-card className="h-full bg-black p-8 transition duration-300 hover:bg-zinc-950">
-                <h3 className="text-2xl font-semibold">
-                  {group.title}
-                </h3>
+          {skillGroups.map((group) => (
+            /* Staggered reveal is handled by GSAP via [data-skill-card] */
+            <div key={group.title} data-skill-card className="h-full bg-black p-8 transition duration-300 hover:bg-zinc-950">
+              <h3 className="text-2xl font-semibold">
+                {group.title}
+              </h3>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  {group.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="rounded-full border border-zinc-800 px-4 py-2 text-sm text-zinc-400 transition hover:border-zinc-600 hover:text-white"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                {group.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-full border border-zinc-800 px-4 py-2 text-sm text-zinc-400 transition hover:border-zinc-600 hover:text-white"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
-            </Reveal>
+            </div>
           ))}
         </div>
 

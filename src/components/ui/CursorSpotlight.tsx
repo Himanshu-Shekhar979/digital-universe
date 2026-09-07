@@ -1,18 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function CursorSpotlight() {
-  const [position, setPosition] = useState({
-    x: -300,
-    y: -300,
-  });
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const glow = glowRef.current;
+
+    // Respect reduced motion: keep the glow off-screen and inert.
+    if (!glow || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    let rafId = 0;
+    let posX = -300;
+    let posY = -300;
+
     const handleMouseMove = (event: MouseEvent) => {
-      setPosition({
-        x: event.clientX,
-        y: event.clientY,
+      posX = event.clientX;
+      posY = event.clientY;
+
+      if (rafId !== 0) return;
+
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        glow.style.transform = `translate3d(${posX}px, ${posY}px, 0) translate(-50%, -50%)`;
       });
     };
 
@@ -20,6 +33,7 @@ export default function CursorSpotlight() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      if (rafId !== 0) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -29,11 +43,9 @@ export default function CursorSpotlight() {
       aria-hidden="true"
     >
       <div
-        className="absolute h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.035] blur-[100px]"
-        style={{
-          left: position.x,
-          top: position.y,
-        }}
+        ref={glowRef}
+        className="absolute left-0 top-0 h-[450px] w-[450px] rounded-full bg-white/[0.035] blur-[100px]"
+        style={{ transform: "translate3d(-300px, -300px, 0)" }}
       />
     </div>
   );

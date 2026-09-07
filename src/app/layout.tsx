@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
@@ -13,10 +13,49 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: "Himanshu Shekhar | Digital Universe",
+  title: "Himanshu Shekhar | Creative Technologist & CS Engineer",
   description:
-    "The digital portfolio and creative universe of Himanshu Shekhar.",
+    "The official digital portfolio of Himanshu Shekhar (Rishu) — exploring software engineering, purposeful web architectures, Three.js 3D cosmos, and full-stack systems.",
+  keywords: [
+    "Himanshu Shekhar",
+    "Rishu",
+    "Creative Technologist",
+    "Computer Science Engineer",
+    "Software Engineer",
+    "Full Stack Developer",
+    "React",
+    "Next.js",
+    "Three.js",
+    "Portfolio",
+  ],
+  authors: [{ name: "Himanshu Shekhar", url: "https://github.com/Himanshu-Shekhar979" }],
+  creator: "Himanshu Shekhar",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    title: "Himanshu Shekhar | Digital Universe",
+    description:
+      "Creative Technologist & Computer Science Engineer exploring full-stack systems, creative coding, and modern web architectures.",
+    siteName: "Himanshu Shekhar Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Himanshu Shekhar | Digital Universe",
+    description:
+      "Creative Technologist & Computer Science Engineer exploring full-stack systems, creative coding, and modern web architectures.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +68,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-black text-white">{children}</body>
     </html>
   );
 }

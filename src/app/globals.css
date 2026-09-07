@@ -17,8 +17,15 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background: #000000;
+}
+
+/* Native smooth scrolling only as a fallback when reduced motion is
+   preferred, since Lenis handles it otherwise and conflicts with it. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {

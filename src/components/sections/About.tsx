@@ -91,28 +91,27 @@ export default function About() {
         </Reveal>
 
         <ol className="mt-24 border-t border-zinc-800">
-          {storyStages.map((stage, index) => (
+          {storyStages.map((stage) => (
             <li key={stage.number}>
-              <Reveal delay={index * 0.08}>
-                <article data-story-stage className="grid gap-8 border-b border-zinc-800 py-10 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-10 sm:py-14 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(18rem,0.8fr)] lg:gap-12">
-                  <div className="flex items-start justify-between gap-4 sm:block">
-                    <span className="font-mono text-sm text-zinc-600">
-                      {stage.number}
-                    </span>
-                    <p className="text-xs uppercase tracking-[0.25em] text-zinc-500 sm:mt-5">
-                      {stage.label}
-                    </p>
-                  </div>
-
-                  <h3 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
-                    {stage.title}
-                  </h3>
-
-                  <p className="max-w-lg self-end text-base leading-relaxed text-zinc-400">
-                    {stage.description}
+              {/* Scroll-linked reveal is handled by GSAP via [data-story-stage] */}
+              <article data-story-stage className="grid gap-8 border-b border-zinc-800 py-10 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-10 sm:py-14 lg:grid-cols-[10rem_minmax(0,1fr)_minmax(18rem,0.8fr)] lg:gap-12">
+                <div className="flex items-start justify-between gap-4 sm:block">
+                  <span className="font-mono text-sm text-zinc-600">
+                    {stage.number}
+                  </span>
+                  <p className="text-xs uppercase tracking-[0.25em] text-zinc-500 sm:mt-5">
+                    {stage.label}
                   </p>
-                </article>
-              </Reveal>
+                </div>
+
+                <h3 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+                  {stage.title}
+                </h3>
+
+                <p className="max-w-lg self-end text-base leading-relaxed text-zinc-400">
+                  {stage.description}
+                </p>
+              </article>
             </li>
           ))}
         </ol>

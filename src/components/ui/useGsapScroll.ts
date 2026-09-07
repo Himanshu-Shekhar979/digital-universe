@@ -8,6 +8,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 type GsapSetup = (instance: typeof gsap) => void;
 
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export function useGsapScroll(
   scope: RefObject<HTMLElement | null>,
   setup: GsapSetup,
@@ -18,7 +21,8 @@ export function useGsapScroll(
     setupRef.current = setup;
   }, [setup]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
+    if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
