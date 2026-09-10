@@ -3,12 +3,11 @@
 import { FormEvent, useState } from "react";
 import Reveal from "@/components/ui/Reveal";
 import MagneticButton from "@/components/ui/MagneticButton";
-
-const contactLinks = [
-  { label: "Email", value: "himanshu80021@gmail.com", href: "mailto:himanshu80021@gmail.com" },
-  { label: "GitHub", value: "Himanshu-Shekhar979", href: "https://github.com/Himanshu-Shekhar979" },
-  { label: "LinkedIn", value: "Himanshu Shekhar", href: "https://www.linkedin.com/in/himanshu-shekhar-867b11299" },
-];
+import { scrollToSection } from "@/lib/scroll";
+import {
+  directContactLinks,
+  transmissionMeta,
+} from "@/content/transmission";
 
 type SubmissionStatus = "idle" | "submitting" | "delivered" | "unconfigured" | "error";
 
@@ -66,28 +65,62 @@ export default function Contact() {
     }
   };
 
+  const handleReturnToTop = () => {
+    if (typeof window !== "undefined") {
+      scrollToSection("#about");
+    }
+  };
+
   return (
-    <section id="contact" className="min-h-screen scroll-mt-24 border-t border-zinc-800 px-6 py-32 text-white">
-      <div className="mx-auto max-w-7xl">
+    <section
+      id="contact"
+      className="relative min-h-screen scroll-mt-24 overflow-hidden bg-black px-6 py-32 text-white"
+      aria-label="World 09: Transmission — Final Signal and Collaboration Gateway"
+    >
+      {/* Top transition receiving World 08 (Future) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black via-zinc-950/40 to-transparent z-10"
+      />
+
+      {/* Ambient signal glow fields (contained within overflow-hidden) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[480px] rounded-full bg-emerald-500/[0.015] blur-[150px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[520px] h-[440px] rounded-full bg-cyan-500/[0.015] blur-[140px]" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl">
+        {/* ================= TELEMETRY HEADER ================= */}
         <Reveal>
-          <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">09 — Transmission</p>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/20 bg-emerald-500/[0.03] px-3.5 py-1 text-[11px] font-mono uppercase tracking-[0.25em] text-emerald-300 backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>{transmissionMeta.telemetryTag}</span>
+            </div>
+
+            <span className="font-mono text-xs text-zinc-500">
+              {transmissionMeta.signalStatus}
+            </span>
+          </div>
         </Reveal>
 
+        {/* ================= TITLE & SUBTITLE ================= */}
         <Reveal delay={0.1}>
-          <div className="mt-16 max-w-4xl">
-            <h2 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-8xl">
-              Send a <span className="text-zinc-500">signal.</span>
+          <div className="mt-10 max-w-4xl">
+            <h2 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-8xl">
+              {transmissionMeta.title}
             </h2>
-            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400">
-              Still learning. Still building. If you have an engineering role, collaborative project,
-              or technical conversation in mind, initiate transmission below.
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+              {transmissionMeta.subtitle}
             </p>
           </div>
         </Reveal>
 
+        {/* ================= DUAL TRANSMISSION INTERFACE ================= */}
         <div className="mt-20 grid gap-12 lg:grid-cols-[1fr_0.8fr]">
+          {/* Dispatch Console Form */}
           <Reveal delay={0.15}>
-            <form onSubmit={handleSubmit} className="rounded-xl border border-zinc-800 bg-black p-6 sm:p-10">
+            <form onSubmit={handleSubmit} className="rounded-xl border border-white/[0.08] bg-black/60 p-6 sm:p-10 backdrop-blur-md">
               {/* Honeypot field for spam prevention */}
               <input
                 type="text"
@@ -99,7 +132,7 @@ export default function Contact() {
               />
 
               <div className="grid gap-6 sm:grid-cols-2">
-                <label className="grid gap-2 text-xs uppercase tracking-wider text-zinc-400">
+                <label className="grid gap-2 text-xs uppercase tracking-wider text-zinc-400 font-mono">
                   <span>Name *</span>
                   <input
                     required
@@ -109,11 +142,11 @@ export default function Contact() {
                     maxLength={100}
                     disabled={status === "submitting"}
                     className="border-b border-zinc-800 bg-transparent px-0 py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-700 focus:border-white disabled:opacity-50"
-                    placeholder="Your name or company"
+                    placeholder="Your name or organization"
                   />
                 </label>
 
-                <label className="grid gap-2 text-xs uppercase tracking-wider text-zinc-400">
+                <label className="grid gap-2 text-xs uppercase tracking-wider text-zinc-400 font-mono">
                   <span>Email *</span>
                   <input
                     required
@@ -121,12 +154,12 @@ export default function Contact() {
                     type="email"
                     disabled={status === "submitting"}
                     className="border-b border-zinc-800 bg-transparent px-0 py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-700 focus:border-white disabled:opacity-50"
-                    placeholder="name@organization.com"
+                    placeholder="name@domain.com"
                   />
                 </label>
               </div>
 
-              <label className="mt-8 grid gap-2 text-xs uppercase tracking-wider text-zinc-400">
+              <label className="mt-8 grid gap-2 text-xs uppercase tracking-wider text-zinc-400 font-mono">
                 <span>Message *</span>
                 <textarea
                   required
@@ -136,11 +169,11 @@ export default function Contact() {
                   maxLength={3000}
                   disabled={status === "submitting"}
                   className="resize-y border-b border-zinc-800 bg-transparent px-0 py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-700 focus:border-white disabled:opacity-50"
-                  placeholder="What opportunities or projects would you like to discuss?"
+                  placeholder="What opportunities, projects, or collaborations would you like to discuss?"
                 />
               </label>
 
-              {/* FEEDBACK STATUS NOTIFICATION */}
+              {/* Dynamic Feedback Notification Status */}
               <div aria-live="polite" className="mt-6">
                 {status === "delivered" && (
                   <div className="rounded-lg border border-emerald-800/80 bg-emerald-950/40 p-4 text-xs text-emerald-300">
@@ -181,25 +214,26 @@ export default function Contact() {
                     type="submit"
                     disabled={status === "submitting"}
                     data-cursor="open"
-                    className="rounded-full border border-white bg-white px-7 py-3 text-xs font-semibold uppercase tracking-wider text-black transition-all hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50"
+                    className="rounded-full border border-white bg-white px-7 py-3 text-xs font-semibold uppercase tracking-wider text-black transition-all hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 font-mono"
                   >
                     {status === "submitting" ? "Processing Transmission..." : "Send Transmission"}
                   </button>
                 </MagneticButton>
 
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-zinc-500 font-mono">
                   {status === "idle" && "Validated via App Router endpoint."}
                 </p>
               </div>
             </form>
           </Reveal>
 
+          {/* Direct Contact Links & Status Column */}
           <Reveal delay={0.25}>
-            <div className="flex h-full flex-col justify-between border-l border-zinc-800 pl-6 sm:pl-10">
+            <div className="flex h-full flex-col justify-between border-l border-white/[0.08] pl-6 sm:pl-10">
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">Direct Channels</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-zinc-500 font-mono">Direct Channels</p>
                 <div className="mt-8 space-y-4">
-                  {contactLinks.map((link) => (
+                  {directContactLinks.map((link) => (
                     <a
                       key={link.label}
                       href={link.href}
@@ -209,12 +243,12 @@ export default function Contact() {
                       className="group flex items-center justify-between gap-5 border-b border-zinc-900 py-5 text-zinc-300 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-white rounded px-2"
                     >
                       <div>
-                        <span className="block text-xs uppercase tracking-[0.2em] text-zinc-500 group-hover:text-zinc-300">
+                        <span className="block text-xs uppercase tracking-[0.2em] text-zinc-500 group-hover:text-zinc-300 font-mono">
                           {link.label}
                         </span>
                         <span className="mt-2 block break-all text-sm font-medium">{link.value}</span>
                       </div>
-                      <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                      <span aria-hidden="true" className="transition-transform group-hover:translate-x-1 font-mono">
                         →
                       </span>
                     </a>
@@ -222,20 +256,44 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="mt-16">
-                <p className="text-xs uppercase tracking-widest text-zinc-600 font-mono">Status Indicator</p>
-                <p className="mt-2 text-2xl font-semibold tracking-tight text-zinc-200 sm:text-3xl">
-                  Open for software engineering roles and creative collaboration.
+              {/* Collaboration Status Callout */}
+              <div className="mt-16 rounded-xl border border-white/[0.06] bg-white/[0.01] p-6 sm:p-8">
+                <span className="font-mono text-xs uppercase tracking-widest text-emerald-400 block mb-2">
+                  COLLABORATION STATUS
+                </span>
+                <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  {transmissionMeta.closingStatement}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+                  {transmissionMeta.availabilityStatus}
                 </p>
               </div>
             </div>
           </Reveal>
         </div>
 
+        {/* ================= TERMINAL EPILOGUE & FOOTER ================= */}
         <Reveal delay={0.35}>
-          <div className="mt-20 flex flex-col gap-4 border-t border-zinc-800 pt-8 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Himanshu Shekhar · Controlled Futurism Architecture</p>
-            <p className="font-mono">Next.js · TypeScript · Three.js · GSAP · Lenis</p>
+          <div className="mt-24 rounded-xl border border-white/[0.06] bg-black/40 p-6 sm:p-8 backdrop-blur-md">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-mono text-xs text-zinc-400">
+                  © {new Date().getFullYear()} Himanshu Shekhar · Controlled Futurism Architecture
+                </p>
+                <p className="mt-1 font-mono text-[11px] text-zinc-500">
+                  {transmissionMeta.systemCredits}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleReturnToTop}
+                className="inline-flex items-center gap-2 font-mono text-xs text-zinc-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:underline"
+              >
+                <span>Return to Story</span>
+                <span aria-hidden="true">↑</span>
+              </button>
+            </div>
           </div>
         </Reveal>
       </div>
