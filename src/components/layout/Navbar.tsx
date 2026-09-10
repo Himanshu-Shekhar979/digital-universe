@@ -96,7 +96,7 @@ export default function Navbar() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed left-0 top-0 z-40 w-full border-b border-white/[0.05] bg-black/80 backdrop-blur-xl"
+      className="fixed left-0 top-0 z-40 w-full border-b border-white/[0.06] bg-black/80 backdrop-blur-2xl"
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6">
         {/* Brand Logo with Creative Identity subtle nod */}
@@ -120,7 +120,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.id}
                 onClick={(e) => handleNavClick(e, item.id)}
-                className={`group relative whitespace-nowrap text-xs font-medium transition-colors duration-300 focus:outline-none focus:ring-1 focus:ring-white/40 rounded py-1 px-0.5 ${
+                className={`group relative whitespace-nowrap font-mono text-[11px] uppercase tracking-wider transition-colors duration-300 focus:outline-none focus:ring-1 focus:ring-white/40 rounded py-1 px-0.5 ${
                   active ? "text-white" : "text-zinc-400 hover:text-white"
                 }`}
               >
@@ -136,9 +136,9 @@ export default function Navbar() {
         </div>
 
         {/* Status Badge */}
-        <div className="hidden items-center gap-2 text-xs uppercase tracking-[0.2em] text-zinc-400 lg:flex">
+        <div className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400 lg:flex">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-zinc-500">Available for Opportunities</span>
+          <span className="text-zinc-400">Available for Opportunities</span>
         </div>
 
         {/* Mobile Hamburger Toggle */}
